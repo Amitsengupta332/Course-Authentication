@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+
 export type TTag = {
   name: string;
   isDeleted: boolean;
@@ -12,7 +14,7 @@ export type TCourse = {
   title: string;
   instructor: string;
   price: number;
-
+  categoryId: Types.ObjectId;
   tags: TTag[];
   startDate: string;
   endDate: string;
