@@ -1,38 +1,29 @@
 import { Request, Response } from 'express';
 import { courseService } from './course.service';
+import sendResponse from '../../utils/sendResponse';
+import httpStatus from 'http-status';
+import catchAsync from '../../utils/catchAsync';
 
-const createCourse = async (req: Request, res: Response) => {
-  try {
-    const courseData = req.body;
-    const result = await courseService.createNewCourseIntoDB(courseData);
-    res.status(200).json({
-      success: true,
-      statusCode: 201,
-      message: 'Course created successfully',
-      data: result,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: 'Something Went Wrong',
-      error: err,
-    });
-  }
-};
+const createCourse = catchAsync(async (req, res) => {
+  const courseData = req.body;
+  const result = await courseService.createNewCourseIntoDB(courseData);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.CREATED,
+    message: 'Course created successfully',
+    data: result,
+  });
+});
 
-const getAllCourse = async (req: Request, res: Response) => {
-  try {
-    const result = await courseService.getAllCourseFromAllDB();
-    res.status(200).json({
-      success: true,
-      statusCode: 200,
-      message: 'Courses retrieved successfully',
-      data: result,
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
+const getAllCourse = catchAsync(async (req: Request, res: Response) => {
+  const result = await courseService.getAllCourseFromAllDB();
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Courses retrieved successfully',
+    data: result,
+  });
+});
 
 export const CourseController = {
   createCourse,
