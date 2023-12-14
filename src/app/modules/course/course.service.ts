@@ -1,3 +1,4 @@
+import { reviewModel } from '../review/review.model';
 import { TCourse } from './course.interface';
 import { courseModel } from './course.model';
 
@@ -12,7 +13,15 @@ const getAllCourseFromAllDB = async () => {
   return result;
 };
 
+const getCourseWithReviewFromDB = async (id: string) => {
+  const course = await courseModel.findById(id);
+  const reviews = await reviewModel.find({ courseId: id });
+  const result = { course, reviews };
+  return result;
+};
+
 export const courseService = {
   createNewCourseIntoDB,
   getAllCourseFromAllDB,
+  getCourseWithReviewFromDB,
 };
