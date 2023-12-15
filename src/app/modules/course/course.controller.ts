@@ -5,8 +5,9 @@ import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 
 const createCourse = catchAsync(async (req, res) => {
-  const courseData = req.body;
-  const result = await courseService.createNewCourseIntoDB(courseData);
+  // const courseData = req.body;
+  console.log(req.body);
+  const result = await courseService.createNewCourseIntoDB(req.body);
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.CREATED,
@@ -36,9 +37,22 @@ const getCourseWithReview = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const updateCourse = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const updatedData = req.body;
+  const result = await courseService.updateCourse(id, updatedData);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Course and Reviews retrieved successfully',
+    data: result,
+  });
+});
 
 export const CourseController = {
   createCourse,
   getAllCourse,
   getCourseWithReview,
+  updateCourse,
 };

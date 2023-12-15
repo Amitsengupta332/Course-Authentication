@@ -1,7 +1,10 @@
 import express from 'express';
 import { CourseController } from './course.controller';
 import validateRequest from '../../middlewares/validateRequest';
-import { courseValidationSchema } from './course.validation';
+import {
+  courseValidationSchema,
+  updateValidationSchema,
+} from './course.validation';
 
 const router = express.Router();
 
@@ -14,5 +17,11 @@ router.post(
 // get all course
 router.get('/courses', CourseController.getAllCourse);
 router.get('/courses/:id/reviews', CourseController.getCourseWithReview);
+
+router.put(
+  '/courses/:id',
+  validateRequest(updateValidationSchema),
+  CourseController.updateCourse,
+);
 
 export const courseRoute = router;

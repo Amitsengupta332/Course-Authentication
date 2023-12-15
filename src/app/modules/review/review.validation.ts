@@ -9,14 +9,10 @@ export const RatingEnum = z.union([
   z.literal(5),
 ]);
 
-const reviewValidationSchema = z.object({
+export const reviewValidationSchema = z.object({
   body: z.object({
     courseId: z.string(),
     rating: RatingEnum,
     review: z.string().min(1),
   }),
 });
-
-export const CourseValidations = {
-  reviewValidationSchema,
-};
