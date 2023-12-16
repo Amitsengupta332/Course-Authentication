@@ -1,4 +1,3 @@
-import { Request, Response } from 'express';
 import { courseService } from './course.service';
 import sendResponse from '../../utils/sendResponse';
 import httpStatus from 'http-status';
@@ -6,7 +5,7 @@ import catchAsync from '../../utils/catchAsync';
 
 const createCourse = catchAsync(async (req, res) => {
   // const courseData = req.body;
-  console.log(req.body);
+
   const result = await courseService.createNewCourseIntoDB(req.body);
   sendResponse(res, {
     success: true,
@@ -16,12 +15,19 @@ const createCourse = catchAsync(async (req, res) => {
   });
 });
 
-const getAllCourse = catchAsync(async (req: Request, res: Response) => {
-  const result = await courseService.getAllCourseFromAllDB();
+const getAllCourse = catchAsync(async (req, res) => {
+  const { page = 1, pageSize = 10, ...query } = req.query;
+
+  const result = await courseService.getAllCourseFromAllDB(
+    query,
+    +page,
+    +pageSize,
+  );
+
   sendResponse(res, {
-    success: true,
     statusCode: httpStatus.OK,
-    message: 'Courses retrieved successfully',
+    success: true,
+    message: 'Get successfully!',
     data: result,
   });
 });
@@ -45,7 +51,7 @@ const updateCourse = catchAsync(async (req, res) => {
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'Course and Reviews retrieved successfully',
+    message: 'Course updated successfully',
     data: result,
   });
 });

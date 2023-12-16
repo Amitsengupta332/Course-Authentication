@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { reviewModel } from '../review/review.model';
 import { TCourse } from './course.interface';
 import { courseModel } from './course.model';
@@ -8,9 +9,25 @@ const createNewCourseIntoDB = async (courseData: TCourse) => {
   return result;
 };
 
-const getAllCourseFromAllDB = async () => {
-  const result = await courseModel.find();
-  return result;
+const getAllCourseFromAllDB = async (
+  query: { [key: string]: any },
+  page: number,
+  pageSize: number,
+): Promise<TCourse[]> => {
+  const skip = (page - 1) * pageSize;
+
+  try {
+    const result = await courseModel
+      .find(query)
+      .skip(skip)
+      .limit(pageSize)
+      .exec();
+
+    return result;
+  } catch (error) {
+    console.error('Error fetching courses:', error);
+    throw error;
+  }
 };
 
 const getCourseWithReviewFromDB = async (id: string) => {
@@ -70,6 +87,8 @@ const updateCourse = async (id: string, payload: Partial<TCourse>) => {
 
   return result;
 };
+
+// best course
 
 export const courseService = {
   createNewCourseIntoDB,
