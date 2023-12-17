@@ -14,18 +14,7 @@ const createReview = catchAsync(async (req, res) => {
   });
 });
 
-// review
-const getBestCourseByRating = catchAsync(async (req, res) => {
-  const result = await reviewService.getBestCourseByRating();
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Review fatched successfull',
-    data: result,
-  });
-});
-
 export const ReviewController = {
   createReview,
-  getBestCourseByRating,
+  // getBestCourseByRating,
 };

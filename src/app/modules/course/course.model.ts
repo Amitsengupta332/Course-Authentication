@@ -4,7 +4,7 @@ import { TCourse, TDetails, TTag } from './course.interface';
 const TagSchema = new Schema<TTag>(
   {
     name: { type: String, required: true },
-    isDeleted: { type: Boolean, required: true },
+    isDeleted: { type: Boolean, default: false, required: true },
   },
   { _id: false },
 );

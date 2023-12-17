@@ -17,6 +17,7 @@ router.post(
 // get all course
 router.get('/courses', CourseController.getAllCourse);
 router.get('/courses/:id/reviews', CourseController.getCourseWithReview);
+router.get('/course/best', CourseController.getBestCourse);
 
 router.put(
   '/courses/:id',

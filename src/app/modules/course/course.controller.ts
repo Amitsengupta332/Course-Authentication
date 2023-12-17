@@ -56,9 +56,28 @@ const updateCourse = catchAsync(async (req, res) => {
   });
 });
 
+// best
+const getBestCourse = catchAsync(async (req, res) => {
+  const bestCourseData = await courseService.getBestCourseDB();
+
+  if (!bestCourseData) {
+    return res.status(httpStatus.NOT_FOUND).json({
+      success: false,
+      message: 'No courses found',
+    });
+  }
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Best course retrieved successfully',
+    data: bestCourseData,
+  });
+});
+
 export const CourseController = {
   createCourse,
   getAllCourse,
   getCourseWithReview,
   updateCourse,
+  getBestCourse,
 };

@@ -12,7 +12,6 @@ router.post(
   ReviewController.createReview,
 );
 
-router.get('/course/best', ReviewController.getBestCourseByRating);
 // // get all course
 // router.get('/', CategoryController.getAllCategories);
 

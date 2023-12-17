@@ -89,10 +89,53 @@ const updateCourse = async (id: string, payload: Partial<TCourse>) => {
 };
 
 // best course
+const getBestCourseDB = async (): Promise<{
+  course: TCourse;
+  averageRating: number;
+  reviewCount: number;
+} | null> => {
+  try {
+    // Aggregate reviews to calculate average rating
+    const aggregateResult = await reviewModel.aggregate([
+      {
+        $group: {
+          _id: '$courseId',
+          averageRating: { $avg: '$rating' },
+          reviewCount: { $sum: 1 },
+        },
+      },
+      { $sort: { averageRating: -1, reviewCount: -1 } },
+      { $limit: 1 },
+    ]);
+
+    if (aggregateResult.length === 0) {
+      return null;
+    }
+
+    const bestCourseId = aggregateResult[0]._id;
+
+    // Fetch the best course details
+    const bestCourse = await courseModel.findById(bestCourseId);
+
+    if (!bestCourse) {
+      return null;
+    }
+
+    return {
+      course: bestCourse.toObject(),
+      averageRating: aggregateResult[0].averageRating,
+      reviewCount: aggregateResult[0].reviewCount,
+    };
+  } catch (error) {
+    console.error('Error fetching best course:', error);
+    throw error;
+  }
+};
 
 export const courseService = {
   createNewCourseIntoDB,
   getAllCourseFromAllDB,
   getCourseWithReviewFromDB,
   updateCourse,
+  getBestCourseDB,
 };
