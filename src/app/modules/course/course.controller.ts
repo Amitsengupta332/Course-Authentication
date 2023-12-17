@@ -16,18 +16,25 @@ const createCourse = catchAsync(async (req, res) => {
 });
 
 const getAllCourse = catchAsync(async (req, res) => {
-  const { page = 1, pageSize = 10, ...query } = req.query;
+  const { page = 1, limit = 10, ...query } = req.query;
 
   const result = await courseService.getAllCourseFromAllDB(
     query,
     +page,
-    +pageSize,
+    +limit,
   );
+  const totalSize = result.length;
+  const metaData = {
+    page: +page,
+    limit: +limit,
+    total: totalSize,
+  };
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Get successfully!',
+    meta: metaData,
     data: result,
   });
 });
