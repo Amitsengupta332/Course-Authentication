@@ -33,7 +33,7 @@ const getAllCourse = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Get successfully!',
+    message: 'Courses retrieved successfully',
     meta: metaData,
     data: result,
   });
