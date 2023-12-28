@@ -5,12 +5,15 @@ import {
   courseValidationSchema,
   updateValidationSchema,
 } from './course.validation';
+import auth from '../auth/auth';
+import { USER_ROLE } from '../auth/auth.constant';
 
 const router = express.Router();
 
 //create course
 router.post(
   '/course',
+  auth(USER_ROLE.admin),
   validateRequest(courseValidationSchema),
   CourseController.createCourse,
 );

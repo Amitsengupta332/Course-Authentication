@@ -29,6 +29,10 @@ const CourseSchema = new Schema<TCourse>({
   provider: { type: String, required: true },
   durationInWeeks: { type: Number },
   details: DetailsSchema,
+  createdBy: {
+    type: Schema.Types.ObjectId,
+    ref: 'user',
+  },
 });
 
 CourseSchema.pre<TCourse>('save', function (next) {

@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { JwtPayload } from 'jsonwebtoken';
 import { reviewModel } from '../review/review.model';
 import { TCourse } from './course.interface';
 import { courseModel } from './course.model';
 
 //create course
-const createNewCourseIntoDB = async (courseData: TCourse) => {
+const createNewCourseIntoDB = async (courseData: TCourse, user: JwtPayload) => {
+  // console.log(user._id);
+  courseData.createdBy = user._id;
+  // console.log(user.id);
   const result = await courseModel.create(courseData);
   return result;
 };
