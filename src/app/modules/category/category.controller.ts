@@ -5,7 +5,10 @@ import catchAsync from '../../utils/catchAsync';
 
 const createCategory = catchAsync(async (req, res) => {
   const categoryData = req.body;
-  const result = await categoryService.createCategoryIntoDB(categoryData);
+  const result = await categoryService.createCategoryIntoDB(
+    categoryData,
+    req.user,
+  );
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.CREATED,

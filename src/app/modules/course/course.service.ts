@@ -25,6 +25,10 @@ const getAllCourseFromAllDB = async (
       .find(query)
       .skip(skip)
       .limit(pageSize)
+      .populate({
+        path: 'createdBy',
+        select: 'id username email role',
+      })
       .exec();
 
     return result;

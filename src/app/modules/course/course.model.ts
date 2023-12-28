@@ -31,7 +31,7 @@ const CourseSchema = new Schema<TCourse>({
   details: DetailsSchema,
   createdBy: {
     type: Schema.Types.ObjectId,
-    ref: 'user',
+    ref: 'User',
   },
 });
 
