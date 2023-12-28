@@ -1,5 +1,20 @@
 import { Schema, model } from 'mongoose';
-import { TReview } from './review.interface';
+import { IUserData, TReview } from './review.interface';
+
+const userDataSchema = new Schema<IUserData>({
+  _id: {
+    type: Schema.Types.ObjectId,
+  },
+  username: {
+    type: String,
+  },
+  email: {
+    type: String,
+  },
+  role: {
+    type: String,
+  },
+});
 
 const ReviewSchema = new Schema<TReview>({
   courseId: {
@@ -13,10 +28,7 @@ const ReviewSchema = new Schema<TReview>({
     required: true,
   },
   review: { type: String },
-  createdBy: {
-    type: Schema.Types.ObjectId,
-    ref: 'user',
-  },
+  createdBy: userDataSchema,
 });
 
 export const reviewModel = model<TReview>('review', ReviewSchema);

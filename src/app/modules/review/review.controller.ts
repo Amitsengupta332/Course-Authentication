@@ -5,7 +5,7 @@ import catchAsync from '../../utils/catchAsync';
 
 const createReview = catchAsync(async (req, res) => {
   const reviewData = req.body;
-  const result = await reviewService.createReviewIntoDB(reviewData);
+  const result = await reviewService.createReviewIntoDB(reviewData, req.user);
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.CREATED,
