@@ -3,11 +3,17 @@ import { Model } from 'mongoose';
 import { USER_ROLE } from './auth.constant';
 export type TUserRole = keyof typeof USER_ROLE;
 
+export interface IPasswordHistory {
+  password: string;
+  time: Date;
+}
 export type TUsers = {
   username: string;
   email: string;
   password: string;
   role: 'user' | 'admin';
+  passwordChangeAt?: Date;
+  passwordChangeHistory?: [IPasswordHistory];
 };
 
 export type TLoginUser = {
@@ -17,7 +23,7 @@ export type TLoginUser = {
 
 export interface UserModel extends Model<TUsers> {
   //instance methods for checking if the user exist
-  isUserExistsByCustomId(id: string): Promise<TUsers>;
+  isUserExistsByUserName(id: string): Promise<TUsers>;
   //instance methods for checking if passwords are matched
   isPasswordMatched(
     plainTextPassword: string,

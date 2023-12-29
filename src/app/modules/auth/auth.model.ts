@@ -2,7 +2,12 @@ import { Schema, model } from 'mongoose';
 
 import bcrypt from 'bcrypt';
 import config from '../../config';
-import { TUsers, UserModel } from './auth.interface';
+import { IPasswordHistory, TUsers, UserModel } from './auth.interface';
+
+const passwordHistorySchema: Schema<IPasswordHistory> = new Schema({
+  password: { type: String, required: true },
+  time: { type: Date, required: true },
+});
 
 const userSchema = new Schema<TUsers, UserModel>(
   {
@@ -19,6 +24,13 @@ const userSchema = new Schema<TUsers, UserModel>(
     password: {
       type: String,
       required: true,
+    },
+    passwordChangeAt: {
+      type: Date,
+    },
+    passwordChangeHistory: {
+      type: [passwordHistorySchema],
+      default: [],
     },
     role: {
       type: String,
@@ -51,7 +63,7 @@ userSchema.methods.comparePassword = async function (
   }
 };
 
-userSchema.statics.isUserExistsByCustomId = async function (username: string) {
+userSchema.statics.isUserExistsByUserName = async function (username: string) {
   return await User.findOne({ username }).select('+password');
 };
 

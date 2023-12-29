@@ -12,7 +12,7 @@ const createUser = catchAsync(async (req, res) => {
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.CREATED,
-    message: 'User created successfully',
+    message: 'User registered successfully',
     data: modifiedResult,
   });
 });
@@ -24,7 +24,24 @@ const loginUser = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'User is logged in succesfully!',
+    message: 'User login successful',
+    data: modifiedResult,
+  });
+});
+const changePassword = catchAsync(async (req, res) => {
+  const { ...passwordData } = req.body;
+
+  const result = await authService.changePassword(req.user, passwordData);
+
+  const modifiedResult = JSON.parse(JSON.stringify(result));
+  delete modifiedResult.password;
+  delete modifiedResult.passwordChangeHistory;
+  delete modifiedResult.passwordChangeAt;
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Password changed successfully',
     data: modifiedResult,
   });
 });
@@ -32,4 +49,5 @@ const loginUser = catchAsync(async (req, res) => {
 export const AuthController = {
   createUser,
   loginUser,
+  changePassword,
 };
