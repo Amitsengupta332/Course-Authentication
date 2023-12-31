@@ -7,7 +7,7 @@ import { courseModel } from './course.model';
 //create course
 const createNewCourseIntoDB = async (courseData: TCourse, user: JwtPayload) => {
   // console.log(user._id);
-  courseData.createdBy = user._id;
+  courseData.createdBy = user.id;
   // console.log(user.id);
   const result = await courseModel.create(courseData);
   return result;
